@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/final_project?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+  mvc:
+    static-path-pattern: /api/upload/**
+  web:
+    resources:
+      static-locations: file:${upload.upload-path}/
+      chain:
+        cache: false
+
+  servlet:
+    multipart:
+      max-file-size: '10MB'
+      max-request-size: '10MB'
+      enabled: true
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
+  level:
+    root: INFO
+    com.zsq.boot: DEBUG
+    com.zsq.boot.controller: DEBUG
+    com.zsq.boot.service: DEBUG
+    com.baomidou.mybatisplus: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+upload:
+  upload-path: F:/Final-Design-zsq/project/user-pic
