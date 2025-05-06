@@ -24,6 +24,10 @@ const stations = ref([
 const selectedStation = ref(null)
 const selectedTarget = ref(null)//记录用户设置的目标水位值
 
+//把Env子组件变成变量
+const dashunChart = ref(null);
+const henggangChart = ref(null);
+
 // 是否已生成策略
 const isStrategyGenerated = ref(false)
 
@@ -69,7 +73,9 @@ const generateStrategy = async () => {
       data: {
         stationId: selectedStationInfo.id,
         stationName: selectedStationInfo.name,  // 添加测站名称
-        targetValue: selectedTarget.value //把目标水位值直接传入后端
+        targetValue: selectedTarget.value ,//把目标水位值直接传入后端
+        dashunHours:dashunChart.value?.getHours(),//用户选择的大舜环境水位小时
+        henggangHours:henggangChart.value?.getHours()//用户选择的横岗大桥环境水位小时
       }
     })
 
@@ -241,12 +247,14 @@ const fetchWaterLevel = async () => {
       <el-row :gutter="20">
         <el-col :span="12">
           <EnvWaterLevelChart 
+            ref="dashunChart"
             station-name="大舜"
             station-label="大舜"
           />
         </el-col>
         <el-col :span="12">
           <EnvWaterLevelChart 
+            ref="henggangChart"
             station-name="横港大桥"
             station-label="横港大桥" 
           />

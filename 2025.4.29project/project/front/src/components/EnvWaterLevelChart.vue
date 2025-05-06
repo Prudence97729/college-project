@@ -11,7 +11,7 @@
             controls-position="right"
             placeholder="小时数"
             @change="loadData"
-          />
+          /><!--@change="loadData":当值变化时触发 loadData 方法-->
           <span class="unit">小时</span>
         </div>
       </div>
@@ -47,11 +47,14 @@ const props = defineProps({
 })
 
 const chartRef = ref(null)
-const hours = ref(6)
+const hours = ref(6)//该子组件定义的小时
 const latestValue = ref('--')
 const loading = ref(false)
 let chart = null
 
+//暴露方法让父组件获取到当前的hours
+const getHours =()=>hours.value;
+defineExpose({getHours});//暴露给父组件
 
 // 确保图表容器有正确尺寸
 const ensureChartSize = () => {

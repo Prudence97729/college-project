@@ -33,8 +33,8 @@ public class StrategyController {
                 return Result.error("缺少必要参数");
             }
             
-            log.info("接收到生成策略请求，测站：{}（ID: {}），目标值：{}", 
-                    dto.getStationName(), dto.getStationId(), dto.getTargetValue());
+            log.info("接收到生成策略请求，测站：{}（ID: {}），目标值：{}，大舜小时{}，横港小时{}",
+                    dto.getStationName(), dto.getStationId(), dto.getTargetValue(),dto.getDashunHours(),dto.getHenggangHours());
             
             // 调用服务层生成策略
             List<Strategy> strategies = strategyService.generateStrategies(dto);
