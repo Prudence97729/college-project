@@ -11,7 +11,6 @@ import WaterLevelChart from '@/components/WaterLevelChart.vue'
         <WaterLevelChart />
       </el-col>
       
-      <!-- 其他图表和数据可以在这里添加 -->
     </el-row>
   </div>
 </template>

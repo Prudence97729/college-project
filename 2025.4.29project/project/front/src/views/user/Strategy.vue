@@ -623,7 +623,6 @@ const fetchWaterLevel = async () => {
 }
 
 .gate-status-card {
-  /* 移除此样式，但为了安全保留定义，只是不使用它 */
   display: none;
 }
 

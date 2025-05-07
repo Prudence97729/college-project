@@ -3,12 +3,14 @@ import { ref, computed, onMounted } from 'vue'
 import { Search, Location } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { gateApi } from '@/api/gate'  // 导入gateApi
-import { getGateMap } from '@/assets/gate_maps'
+import { getGateMap } from '@/assets/gate_maps'//导入单个水闸地图位置
+import OverallMap from '@/assets/gate_maps/OverallMap.vue'//导入整体地图组件
 
 // 数据和加载状态
 const gates = ref([])
 const loading = ref(false)
-const mapDialogVisible = ref(false)
+const mapDialogVisible = ref(false)//单个水闸地图详情弹窗设置
+const overallMapVisible = ref(false)//整体地图详情弹窗设置
 const currentGate = ref(null)
 
 // 获取水闸数据
@@ -72,10 +74,10 @@ const handlePageChange = (page) => {
   currentPage.value = page
 }
 
-// 当前地图组件
+// 当前地图组件(单个水闸地图详情)
 const currentMapComponent = ref(null)
 
-// 修改handleViewDetails函数
+// 修改handleViewDetails函数，显示地图详情弹窗
 const handleViewDetails = async (gate) => {
   try {
     const res = await gateApi.getGateDetail(gate.id)
@@ -90,6 +92,10 @@ const handleViewDetails = async (gate) => {
     console.error('获取水闸详情失败:', error)
     ElMessage.error('获取水闸详情失败')
   }
+}
+//整体地图显示弹窗
+const handleOverallMap =()=>{
+  overallMapVisible.value = true
 }
 
 // 修改水闸和测站数据，只保留6个测站
@@ -190,6 +196,15 @@ const debugStations = () => {
           :value="option.value"
         />
       </el-select>
+      <!--全图展示-->
+      <el-button 
+        type="primary" 
+        :icon="Location"
+        @click="handleOverallMap"
+        class="action-button"
+      >
+        整体地图位置
+      </el-button>
     </div>
 
     <!-- 水闸列表 -->
@@ -271,7 +286,7 @@ const debugStations = () => {
       />
     </div>
 
-    <!-- 地图对话框 -->
+    <!-- 单个水闸地图对话框 -->
     <el-dialog
       v-model="mapDialogVisible"
       :title="currentGate?.gateName + '位置信息'"
@@ -286,6 +301,13 @@ const debugStations = () => {
           :station-info="getRelatedStations(currentGate?.gateName)"
         />
       </div>
+    </el-dialog>
+    <el-dialog
+      v-model="overallMapVisible"
+      title="分布总览" 
+      width="85%"
+    >
+      <OverallMap/>
     </el-dialog>
   </div>
 </template>
