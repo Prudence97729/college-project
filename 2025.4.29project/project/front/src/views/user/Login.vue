@@ -64,187 +64,173 @@ const goToAdminLogin = () => {
 
 <template>
   <div class="login-container">
-    <!-- 左侧图片区域 -->
-    <div class="image-section">
-      <div class="overlay">
+    <!-- 整合背景图和登录框的容器 -->
+    <div class="background-wrapper">
+      <!-- 背景图片层 -->
+      <div class="background-image"></div>
+      
+      <!-- 半透明遮罩层 -->
+      <div class="background-overlay"></div>
+      
+      <!-- 系统标题文字 -->
+      <div class="system-title">
         <h1>水闸群调度策略推荐系统</h1>
         <p>基于知识图谱的平原河网智能调度平台</p>
       </div>
-    </div>
-
-    <!-- 右侧登录表单 -->
-    <div class="login-section">
-      <el-card class="login-box">
-        <template #header>
-          <div class="card-header">
-            <h2>登录</h2>
-            <div class="admin-link" @click="goToAdminLogin">
-              <span>管理员入口</span>
-              <el-icon><ArrowRight /></el-icon>
+      
+      <!-- 登录表单卡片 -->
+      <div class="login-card-wrapper">
+        <el-card class="login-card">
+          <template #header>
+            <div class="card-header">
+              <h2>用户登录</h2>
+              <div class="admin-link" @click="goToAdminLogin">
+                <span>管理员入口</span>
+                <el-icon><ArrowRight /></el-icon>
+              </div>
             </div>
-          </div>
-        </template>
-        
-        <el-form
-          ref="loginFormRef"
-          :model="loginForm"
-          :rules="rules"
-          label-position="top"
-        >
-          <el-form-item prop="username">
-            <el-input 
-              v-model="loginForm.username"
-              placeholder="用户名"
-              :prefix-icon="User"
-            />
-          </el-form-item>
+          </template>
           
-          <el-form-item prop="password">
-            <el-input 
-              v-model="loginForm.password"
-              type="password"
-              placeholder="密码"
-              show-password
-              :prefix-icon="Lock"
-            />
-          </el-form-item>
-          
-          <el-form-item>
-            <el-button 
-              type="primary" 
-              class="login-button" 
-              :loading="loading"
-              @click="handleLogin(loginFormRef)"
-            >
-              登录
-            </el-button>
-          </el-form-item>
-          
-          <div class="register-link">
-            还没有账号？<router-link to="/register">立即注册</router-link>
-          </div>
-        </el-form>
-      </el-card>
+          <el-form
+            ref="loginFormRef"
+            :model="loginForm"
+            :rules="rules"
+            label-position="top"
+          >
+            <el-form-item prop="username">
+              <el-input 
+                v-model="loginForm.username"
+                placeholder="请输入用户名"
+                :prefix-icon="User"
+                size="large"
+              />
+            </el-form-item>
+            
+            <el-form-item prop="password">
+              <el-input 
+                v-model="loginForm.password"
+                type="password"
+                placeholder="请输入密码"
+                show-password
+                :prefix-icon="Lock"
+                size="large"
+              />
+            </el-form-item>
+            
+            <el-form-item>
+              <el-button 
+                type="primary" 
+                class="login-button" 
+                :loading="loading"
+                @click="handleLogin(loginFormRef)"
+                size="large"
+              >
+                登录
+              </el-button>
+            </el-form-item>
+            
+            <div class="bottom-links">
+              <router-link to="/register">注册账号</router-link>
+              <router-link to="/forget-password">忘记密码？</router-link>
+            </div>
+          </el-form>
+        </el-card>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* 基础容器 */
 .login-container {
-  display: flex;
+  position: relative;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
 }
 
-.image-section {
-  flex: 1.2;
-  background-image: url('@/assets/images/login-bg.jpg');
-  background-size: cover;
-  background-position: center;
+.background-wrapper {
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 
-.overlay {
+/* 背景图片样式 */
+.background-image {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  background-image: url('@/assets/images/login-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* 半透明遮罩 */
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 1;
 }
 
-.overlay h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+/* 系统标题样式 */
+.system-title {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
   color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  z-index: 2;
 }
 
-.overlay p {
+.system-title h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.system-title p {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
 }
 
-.login-section {
-  flex: 1;
-  background-color: #d9dcdf;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+/* 登录卡片容器 */
+.login-card-wrapper {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  transform: translateY(-50%);
+  width: 420px;
+  z-index: 3;
 }
 
-.login-box {
-  width: 100%;
-  max-width: 400px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+/* 登录卡片样式 */
+.login-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
 }
 
-.login-box :deep(.el-card__header) {
-  background-color: white;
-  border-bottom: none;
-  padding-bottom: 0;
+.login-card :deep(.el-card__header) {
+  border-bottom: 1px solid var(--el-border-color-light);
+  padding: 24px;
+  background-color: transparent;
 }
 
-.login-box :deep(h2) {
-  text-align: center;
-  color: #1890ff;
-  margin: 0;
-  font-size: 1.8rem;
-}
-
-.login-button {
-  width: 100%;
-  height: 40px;
-}
-
-.register-link {
-  margin-top: 1rem;
-  text-align: center;
-  color: #666;
-}
-
-.register-link a {
-  color: #1890ff;
-  text-decoration: none;
-  margin-left: 5px;
-}
-
-.register-link a:hover {
-  color: #40a9ff;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .login-container {
-    flex-direction: column;
-  }
-  
-  .image-section {
-    display: none;
-  }
-  
-  .login-section {
-    padding: 1rem;
-    background-color: #d9dcdf;
-  }
-  
-  .login-box {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  }
+.login-card :deep(.el-card__body) {
+  padding: 30px;
 }
 
 .card-header {
@@ -255,20 +241,112 @@ const goToAdminLogin = () => {
 
 .card-header h2 {
   margin: 0;
-  color: #303133;
+  font-size: 1.5rem;
+  color: var(--el-text-color-primary);
 }
 
-/* 添加管理员入口按钮样式 */
+/* 管理员入口链接 */
 .admin-link {
-  font-size: 14px;
   display: flex;
   align-items: center;
-  gap: 4px;
-  color: #909399;
+  gap: 6px;
+  color: var(--el-color-info);
+  font-size: 14px;
+  cursor: pointer;
   transition: color 0.3s;
 }
 
 .admin-link:hover {
-  color: #409EFF;
+  color: var(--el-color-primary);
 }
-</style> 
+
+/* 登录按钮 */
+.login-button {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+/* 底部链接 */
+.bottom-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.bottom-links a {
+  color: var(--el-color-info);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.bottom-links a:hover {
+  color: var(--el-color-primary);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .system-title {
+    left: 5%;
+  }
+  
+  .login-card-wrapper {
+    right: 5%;
+  }
+}
+
+@media (max-width: 992px) {
+  .system-title {
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 90%;
+  }
+  
+  .login-card-wrapper {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+  }
+  
+  .system-title h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .login-card-wrapper {
+    width: 90%;
+  }
+  
+  .login-card :deep(.el-card__header) {
+    padding: 18px;
+  }
+  
+  .login-card :deep(.el-card__body) {
+    padding: 20px;
+  }
+  
+  .system-title h1 {
+    font-size: 1.8rem;
+  }
+  
+  .system-title p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .system-title {
+    top: 15%;
+  }
+  
+  .login-card-wrapper {
+    top: 60%;
+  }
+}
+</style>

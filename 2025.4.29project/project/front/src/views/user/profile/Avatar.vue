@@ -101,6 +101,7 @@ onUnmounted(() => {
       </template>
       
       <div class="avatar-uploader">
+        <!--el-upload 组件本质上是一个 ​​透明文件输入框​​，当点击其包裹的内容（如图片或图标）时，会自动触发浏览器原生的文件选择窗口-->
         <el-upload
           ref="uploadRef"
           class="avatar-uploader"
